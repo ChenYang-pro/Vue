@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computed & Watch</title>
+</head>
+
+<body>
+    <div id="demo">
+        姓: <input type="text" placeholder="First Name" v-model="firstName"><br>
+        名: <input type="text" placeholder="Last Name" v-model="lastName"><br>
+        <!--fullName1是根据fistName和lastName计算产生-->
+        姓名1(单向): <input type="text" placeholder="Full Name1" v-model="fullName1"><br>
+        姓名2(单向): <input type="text" placeholder="Full Name2" v-model="fullName2"><br>
+        姓名3(双向): <input type="text" placeholder="Full Name3" v-model="fullName3"><br>
+
+        <p>{{fullName1}}</p>
+        <p>{{fullName2}}</p>
+        <p>{{fullName3}}</p>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script>
+    const vm = new Vue({
+        el: '#demo',
+        data: {
+            firstName: 'A',
+            lastName: 'B',
+            fullName2: 'A-B'
+        },
+        computed: {
+            fullName1() {
+                return this.firstName + '--' + this.lastName
+            },
+
+            fullName3: {
+                // 当获取当前属性值时自动调用
+                get() {
+                    return this.firstName + '-' + this.lastName
+                },
+                set(value) {
+                    const names = value.split('-')
+                    console.log(names)
+                    this.firstName = names[0]
+                    this.lastName = names[1]
+                }
+            }
+        },
+        watch: {
+            firstName: function (value) { //相当于set
+                this.fullName2 = value + '-' + this.lastName
+            }
+            
+        }
+        
+    })
+    vm.$watch('lastName',function(value){ //相当于set
+        this.fullName2 = this.firstName + '-' + value
+    })
+
+</script>
+
+</html>
