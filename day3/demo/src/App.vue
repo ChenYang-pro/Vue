@@ -1,7 +1,11 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <router-view/>
+    <p></p>
+    <router-view />
+    <router-view name='title'/>
+    <router-link to="/goods">点击查看商品</router-link>
+    <router-view name='image'/>
   </div>
 </template>
 

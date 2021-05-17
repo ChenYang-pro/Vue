@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue-Resource</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+
+<body>
+    <div id="app" style="display: none;" :style="{display: 'block'}">
+        <h2>Vue-Resource的使用</h2>
+        <el-link type="success" @click="toGet">GET</el-link>
+        <el-link type="success" @click="toPost">POST</el-link>
+        <el-link type="success" @click="toJsonP">JSONP</el-link>
+        <p>{{msg}}</p>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="./node_modules/vue-resource/dist/vue-resource.min.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script type="text/javascript">
+    const vm = new Vue({ // 配置对象 options
+        el: '#app',
+        data: {
+            msg: ''
+        },
+        mounted() {
+            Vue.http.interceptors.push(function(request,next){
+                console.log("request init");
+                next (function (response){
+                    console.log("response init")
+                    return response
+                })
+            })
+        },
+        methods: {
+            toGet: function () {
+                this.$http.get('package.json',
+                    {
+                        params: {
+                            userId: '101'
+                        },
+                        headers: {
+                            token: 'ava'
+                        },
+                    }).then(res => {
+                        this.msg = res.data
+                    }, error => {
+                        this.msg = error
+                    })
+            },
+            toPost: function () {
+                this.$http.post("package.json",{
+                    headers:{access_token:"abc"}
+                }).then(function(res){
+                    console.log("成功了")
+                    this.msg = res
+                },function(error){
+                    console.log("失败了")
+                    this.msg = error
+                })
+            },
+            toJsonP () {
+                this.$http.jsonp("http://www.immoc.com/course/AjaxCourseMembers?ids=796").then(res=>{
+                    console.log("成功了")
+                    this.msg = res
+                })
+            }
+        },
+    })
+</script>
+
+
+</html>
