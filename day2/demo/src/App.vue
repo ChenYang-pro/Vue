@@ -1,23 +1,19 @@
 <template>
   <div id="app">
-    <Parent />
+    <img src="./assets/logo.png">
+    <router-view/>
   </div>
 </template>
 
 <script>
-import Parent from "./components/Parent";
-
 export default {
-  name: "App",
-  components: {
-    Parent,
-  },
-};
+  name: 'App'
+}
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
